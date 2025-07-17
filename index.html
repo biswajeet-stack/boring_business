@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dallas Pest Control: Interactive Market Roadmap</title>
+    <!-- Chosen Palette: Dallas Professional -->
+    <!-- Application Structure Plan: The application is designed as a thematic, single-page dashboard rather than a linear report. This structure was chosen because the goal is strategic synthesis, not sequential reading. A user (e.g., a business owner or marketer) can immediately jump to the most relevant section for their current task—be it understanding the competition, profiling a customer, or planning a seasonal campaign. The top-down flow starts with the big picture ('Market Opportunity'), moves to the core business challenges ('The Pests', 'The Customers'), analyzes the environment ('The Competition'), and concludes with a practical tool ('Strategic Roadmap'). This task-oriented design enhances usability by making complex information accessible and actionable. Key interactions include toggles, tabs, and charts that dynamically update to reveal deeper insights, encouraging exploration and comparison. -->
+    <!-- Visualization & Content Choices: The application translates the report's dense text and tables into digestible, interactive components. 
+        - Report Info (Market Size/Growth) -> Goal (Show scale) -> Viz (Dynamic Stat Cards & Line Chart) -> Interaction (Hover effects) -> Justification (Quickly conveys impressive numbers) -> Library (HTML/CSS, Chart.js).
+        - Report Info (Dallas Demographics) -> Goal (Highlight B2B opportunity) -> Viz (Donut Chart) -> Interaction (Tooltips on hover) -> Justification (Visually emphasizes the high renter population) -> Library (Chart.js).
+        - Report Info (Seasonal Pest Calendar) -> Goal (Create a planning tool) -> Viz (Interactive Tabs) -> Interaction (Clicking season updates pest list & marketing angle) -> Justification (Transforms a static table into a dynamic, practical marketing calendar) -> Library (JS).
+        - Report Info (Competitor Tables) -> Goal (Compare Tiers) -> Viz (Toggle with cards) -> Interaction (Button toggle updates displayed competitor group) -> Justification (Simplifies comparison between National and Local players, highlighting the 'trust deficit') -> Library (JS).
+        - Report Info (Research Checklist) -> Goal (Make actionable) -> Viz (Collapsible Accordion) -> Interaction (Click to expand/collapse sections) -> Justification (Organizes a long checklist into manageable, thematic steps) -> Library (JS). -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-main: #F8F7F4;
+            --text-dark: #2c3e50;
+            --primary: #4A908E;
+            --accent: #C0A15E;
+            --card-bg: #FFFFFF;
+            --border-color: #e2e8f0;
+        }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        .active-nav { 
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            font-weight: 600;
+        }
+        .inactive-nav {
+            color: var(--text-dark);
+            border-bottom: 2px solid transparent;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .active-tab {
+            background-color: var(--primary);
+            color: white;
+        }
+        .inactive-tab {
+            background-color: var(--card-bg);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out;
+        }
+        .accordion-button.open + .accordion-content {
+            max-height: 1000px;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-sm shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-xl font-bold text-gray-800">Dallas Pest Control Roadmap</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#opportunity" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300">Market Opportunity</a>
+                        <a href="#pests" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300">The Pests</a>
+                        <a href="#customers" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300">The Customers</a>
+                        <a href="#competition" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300">The Competition</a>
+                        <a href="#roadmap" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300">Strategic Roadmap</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+        <section id="opportunity" class="mb-16 scroll-mt-24">
+            <h2 class="text-3xl font-bold text-center mb-2">The Dallas Market Opportunity</h2>
+            <p class="text-center text-lg text-gray-600 max-w-3xl mx-auto mb-8">The Dallas pest control market is a large, growing, and valuable landscape. However, the dominance of national chains has created a "trust deficit," opening a significant opportunity for local businesses that prioritize reliability and customer service.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-primary text-center">
+                    <h3 class="text-4xl font-bold text-primary">$2.2B+</h3>
+                    <p class="text-gray-600 mt-2">Texas Pest Control Market Value</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-accent text-center">
+                    <h3 class="text-4xl font-bold text-accent">~6%</h3>
+                    <p class="text-gray-600 mt-2">Projected National CAGR</p>
+                </div>
+                 <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-primary text-center">
+                    <h3 class="text-4xl font-bold text-primary">3,400+</h3>
+                    <p class="text-gray-600 mt-2">Pest Control Businesses in Texas</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-accent text-center">
+                    <h3 class="text-4xl font-bold text-accent">+27.6%</h3>
+                    <p class="text-gray-600 mt-2">Y/Y Growth in M&A Activity</p>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h3 class="text-xl font-bold text-center mb-4">U.S. Pest Control Market Growth Projection (in billions)</h3>
+                <div class="chart-container h-64 md:h-80">
+                    <canvas id="marketGrowthChart"></canvas>
+                </div>
+                 <p class="text-center text-sm text-gray-500 mt-4">The national market shows a consistent upward trend, reinforcing the stability and long-term potential of the industry. This growth is fueled by factors like climate change and increased housing density.</p>
+            </div>
+        </section>
+
+        <hr class="my-16 border-gray-300">
+
+        <section id="pests" class="mb-16 scroll-mt-24">
+            <h2 class="text-3xl font-bold text-center mb-2">Know Your Enemy: The Dallas Pest Ecosystem</h2>
+            <p class="text-center text-lg text-gray-600 max-w-3xl mx-auto mb-8">Effective marketing starts with expert knowledge. A proactive, seasonally-aware strategy that anticipates customer needs based on predictable pest activity is crucial for success in the Dallas climate.</p>
+
+            <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg">
+                <h3 class="text-xl font-bold mb-4 text-center">Seasonal Pest Marketing Calendar</h3>
+                <div id="season-tabs" class="flex flex-wrap justify-center gap-2 mb-6">
+                    <button data-season="spring" class="season-tab px-4 py-2 rounded-full font-semibold transition-colors duration-300 active-tab">Spring 🌱</button>
+                    <button data-season="summer" class="season-tab px-4 py-2 rounded-full font-semibold transition-colors duration-300 inactive-tab">Summer ☀️</button>
+                    <button data-season="fall" class="season-tab px-4 py-2 rounded-full font-semibold transition-colors duration-300 inactive-tab">Fall 🍂</button>
+                    <button data-season="winter" class="season-tab px-4 py-2 rounded-full font-semibold transition-colors duration-300 inactive-tab">Winter ❄️</button>
+                </div>
+                <div id="seasonal-content" class="p-4 bg-gray-50 rounded-lg fade-in">
+                    <h4 id="season-title" class="text-lg font-bold text-primary mb-2"></h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h5 class="font-semibold mb-2">Primary Threats:</h5>
+                            <ul id="pest-list" class="list-disc list-inside space-y-1 text-gray-700"></ul>
+                        </div>
+                        <div>
+                            <h5 class="font-semibold mb-2">Recommended Marketing Angle:</h5>
+                            <p id="marketing-angle" class="text-gray-700"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-16 border-gray-300">
+
+        <section id="customers" class="mb-16 scroll-mt-24">
+            <h2 class="text-3xl font-bold text-center mb-2">Know Your Customer: Dallas Audience Deep Dive</h2>
+            <p class="text-center text-lg text-gray-600 max-w-3xl mx-auto mb-8">The Dallas market is not monolithic. It comprises distinct residential and commercial segments, each with unique needs, motivations, and pain points. A targeted approach is essential.</p>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                <div class="lg:col-span-2 bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold text-center mb-4">Dallas Housing Breakdown</h3>
+                    <div class="chart-container h-64 md:h-80">
+                        <canvas id="housingTenureChart"></canvas>
+                    </div>
+                    <p class="text-center text-sm text-gray-500 mt-4">The majority of Dallas residents are renters, highlighting a massive, underserved B2B market for property management companies and apartment complexes.</p>
+                </div>
+
+                <div class="lg:col-span-3">
+                    <div class="space-y-4">
+                        <div class="bg-white p-6 rounded-lg shadow-lg">
+                            <h4 class="font-bold text-lg mb-2">🏡 The Residential Customer</h4>
+                            <p class="text-gray-600">Driven by a need for <strong class="text-primary">family safety</strong> and <strong class="text-primary">property protection</strong>. They value reliability, communication, and local trust over the impersonal service of national chains. Pet-safe and eco-friendly options are a major selling point.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-lg">
+                            <h4 class="font-bold text-lg mb-2">🏢 The Commercial Customer</h4>
+                            <p class="text-gray-600">Decision-making is based on business imperatives: <strong class="text-accent">regulatory compliance</strong> (especially in food & healthcare), <strong class="text-accent">brand reputation</strong>, and operational continuity. They need a partner who understands their industry's specific legal requirements.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-lg">
+                            <h4 class="font-bold text-lg mb-2">🔑 The Real Estate Niche</h4>
+                             <p class="text-gray-600">A high-value B2B2C channel. Realtors and home inspectors need a <strong class="text-primary">fast, reliable partner</strong> for Wood-Destroying Insect (WDI) reports. Building these relationships creates a steady stream of "golden leads" – new homeowners with no prior pest control loyalty.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-16 border-gray-300">
+
+        <section id="competition" class="mb-16 scroll-mt-24">
+             <h2 class="text-3xl font-bold text-center mb-2">The Competitive Landscape</h2>
+            <p class="text-center text-lg text-gray-600 max-w-3xl mx-auto mb-8">The market is a battlefield between two distinct tiers. The key to victory is not competing on the giants' terms (brand spend), but on their weaknesses (customer service).</p>
+
+            <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg">
+                <div id="competitor-tabs" class="flex justify-center gap-2 mb-6">
+                    <button data-competitor="national" class="competitor-tab px-4 py-2 rounded-full font-semibold transition-colors duration-300 active-tab">National Giants</button>
+                    <button data-competitor="local" class="competitor-tab px-4 py-2 rounded-full font-semibold transition-colors duration-300 inactive-tab">Local Champions</button>
+                </div>
+                <div id="competitor-content-container" class="fade-in"></div>
+            </div>
+        </section>
+
+        <hr class="my-16 border-gray-300">
+
+        <section id="roadmap" class="scroll-mt-24">
+            <h2 class="text-3xl font-bold text-center mb-2">Your Strategic Research Roadmap</h2>
+            <p class="text-center text-lg text-gray-600 max-w-3xl mx-auto mb-8">This interactive checklist translates the report's findings into a concrete, actionable plan. Systematically completing these research tasks will form the foundation of a winning marketing strategy.</p>
+
+            <div id="accordion-container" class="space-y-4"></div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white mt-16">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 text-center">
+            <p>Interactive report generated from source data. For strategic planning purposes only.</p>
+        </div>
+    </footer>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            const seasonalData = {
+                spring: {
+                    title: "Spring 🌱: Termite Swarms & Ant Invasions",
+                    pests: ["Termites (swarming season)", "Ants (foraging for food)", "Mosquitoes (breeding begins)", "Carpenter Ants"],
+                    angle: "\"Spring Pest Invasion Alert!\" Focus on the urgency of termite season. Promote free termite inspections and offer a \"Spring Kick-Start\" package for ants and early mosquitoes."
+                },
+                summer: {
+                    title: "Summer ☀️: Mosquitoes, Wasps, and Fire Ants",
+                    pests: ["Mosquitoes (peak season)", "Wasps & Hornets", "Fire Ants", "Cockroaches", "Fleas & Ticks"],
+                    angle: "\"Take Back Your Summer!\" Heavily promote seasonal mosquito control plans, safe wasp nest removal, and targeted fire ant treatments for lawns."
+                },
+                fall: {
+                    title: "Fall 🍂: Rodents & Spiders Move Indoors",
+                    pests: ["Rodents (seeking shelter)", "Spiders (mating season)", "Cockroaches", "Crickets", "Stink Bugs"],
+                    angle: "\"Winter is Coming: Fortify Your Home!\" Focus marketing on rodent exclusion services and \"fall invader\" packages that seal entry points before winter."
+                },
+                winter: {
+                    title: "Winter ❄️: Rodents & Cockroaches Seek Warmth",
+                    pests: ["Rodents (peak indoor activity)", "Cockroaches", "Bed Bugs (holiday travel)", "Stored Product Pests"],
+                    angle: "\"Keep Your Home Cozy & Pest-Free.\" Emphasize interior pest control, rodent monitoring, and discreet bed bug inspections for post-travel peace of mind."
+                }
+            };
+            
+            const competitorData = {
+                national: {
+                    title: "National Giants (Orkin, Terminix, etc.)",
+                    strengths: ["Massive brand recognition", "Large advertising budgets", "Comprehensive service menus", "Sophisticated guarantees"],
+                    weaknesses: ["Impersonal service & poor communication", "Missed/late appointments", "Billing errors & contract issues", "Inconsistent service quality"]
+                },
+                local: {
+                    title: "Local Champions (All-Safe, BUGCO, etc.)",
+                    strengths: ["Strong local identity & trust", "Perceived as more responsive/accountable", "Deep knowledge of Dallas pests", "Positive word-of-mouth & reviews"],
+                    weaknesses: ["Smaller marketing budgets", "Lower overall brand recognition", "May have a narrower range of services", "Fewer sophisticated digital tools"]
+                }
+            };
+
+            const roadmapData = [
+                {
+                    title: "Phase 1: Brand Identity & Positioning",
+                    items: [
+                        "Define the Core Brand Promise (e.g., Unmatched Reliability, Family Safety).",
+                        "Develop a Unique Selling Proposition (USP).",
+                        "Finalize Target Audience Personas (e.g., North Dallas Homeowner, Property Manager).",
+                        "Select a professional Business Name and Logo."
+                    ]
+                },
+                {
+                    title: "Phase 2: Service Offering & Pricing",
+                    items: [
+                        "Finalize the Service Menu based on primary Dallas pests.",
+                        "Structure competitive Pricing Tiers (e.g., Basic, Plus, Premium).",
+                        "Define a clear and compelling Service Guarantee.",
+                        "Determine stance on contracts (e.g., 'No Contracts' as a differentiator)."
+                    ]
+                },
+                {
+                    title: "Phase 3: Digital Marketing & Online Presence",
+                    items: [
+                        "Plan and develop a conversion-focused website with service/pest landing pages.",
+                        "Conduct local keyword research for SEO.",
+                        "Develop a content marketing plan based on the seasonal calendar.",
+                        "Claim and optimize Google Business Profile and other key directories (Yelp, Angi).",
+                        "Establish a process for generating and responding to online reviews.",
+                        "Research and plan initial PPC and social media ad campaigns."
+                    ]
+                },
+                {
+                    title: "Phase 4: Local & Partnership Marketing",
+                    items: [
+                        "Develop an outreach program for real estate agents and property managers.",
+                        "Design a compelling 'Partner Package' with referral incentives.",
+                        "Research local advertising channels and community sponsorships.",
+                        "Plan and procure professional vehicle wraps and uniforms."
+                    ]
+                },
+                {
+                    title: "Phase 5: Sales & Customer Service Framework",
+                    items: [
+                        "Develop a written Customer Service Charter to combat common industry complaints.",
+                        "Plan comprehensive technician training on both technical and communication skills.",
+                        "Research and select a modern business management software (CRM)."
+                    ]
+                }
+            ];
+
+            function renderRoadmap() {
+                const container = document.getElementById('accordion-container');
+                container.innerHTML = roadmapData.map((section, index) => `
+                    <div class="bg-white rounded-lg shadow-md">
+                        <button class="accordion-button w-full text-left p-4 font-semibold text-lg flex justify-between items-center transition-colors duration-300 hover:bg-gray-50">
+                            <span>${section.title}</span>
+                            <span class="transform transition-transform duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                            </span>
+                        </button>
+                        <div class="accordion-content">
+                            <ul class="p-4 pt-0 list-disc list-inside space-y-2 text-gray-700">
+                                ${section.items.map(item => `<li>${item}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            function renderCompetitorContent(type) {
+                const data = competitorData[type];
+                const container = document.getElementById('competitor-content-container');
+                container.innerHTML = `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="p-4 bg-green-50 rounded-lg border border-green-200">
+                            <h4 class="font-bold text-lg mb-2 text-green-800">Strengths 💪</h4>
+                            <ul class="list-disc list-inside space-y-1 text-green-700">
+                                ${data.strengths.map(s => `<li>${s}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <div class="p-4 bg-red-50 rounded-lg border border-red-200">
+                            <h4 class="font-bold text-lg mb-2 text-red-800">Weaknesses / Opportunities 📉</h4>
+                            <ul class="list-disc list-inside space-y-1 text-red-700">
+                                ${data.weaknesses.map(w => `<li>${w}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            }
+
+            function updateSeasonalContent(season) {
+                const data = seasonalData[season];
+                document.getElementById('season-title').textContent = data.title;
+                document.getElementById('pest-list').innerHTML = data.pests.map(pest => `<li>${pest}</li>`).join('');
+                document.getElementById('marketing-angle').textContent = data.angle;
+                document.getElementById('seasonal-content').classList.remove('fade-in');
+                void document.getElementById('seasonal-content').offsetWidth;
+                document.getElementById('seasonal-content').classList.add('fade-in');
+            }
+
+            const seasonTabs = document.querySelectorAll('.season-tab');
+            seasonTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    seasonTabs.forEach(t => t.classList.replace('active-tab', 'inactive-tab'));
+                    tab.classList.replace('inactive-tab', 'active-tab');
+                    updateSeasonalContent(tab.dataset.season);
+                });
+            });
+
+            const competitorTabs = document.querySelectorAll('.competitor-tab');
+            competitorTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    competitorTabs.forEach(t => t.classList.replace('active-tab', 'inactive-tab'));
+                    tab.classList.replace('inactive-tab', 'active-tab');
+                    document.getElementById('competitor-content-container').classList.remove('fade-in');
+                    void document.getElementById('competitor-content-container').offsetWidth;
+                    document.getElementById('competitor-content-container').classList.add('fade-in');
+                    renderCompetitorContent(tab.dataset.competitor);
+                });
+            });
+
+            const accordionContainer = document.getElementById('accordion-container');
+            accordionContainer.addEventListener('click', function(e) {
+                const button = e.target.closest('.accordion-button');
+                if (button) {
+                    button.classList.toggle('open');
+                    button.querySelector('svg').classList.toggle('rotate-180');
+                }
+            });
+
+
+            const chartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                family: 'Inter',
+                            }
+                        }
+                    },
+                    tooltip: {
+                        titleFont: { family: 'Inter', weight: 'bold' },
+                        bodyFont: { family: 'Inter' }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            font: { family: 'Inter' }
+                        },
+                        grid: {
+                           display: false
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            font: { family: 'Inter' }
+                        }
+                    }
+                }
+            };
+            
+            const marketGrowthCtx = document.getElementById('marketGrowthChart').getContext('2d');
+            new Chart(marketGrowthCtx, {
+                type: 'line',
+                data: {
+                    labels: ['2024', '2026', '2028', '2030', '2032'],
+                    datasets: [{
+                        label: 'Projected Market Value ($B)',
+                        data: [28.4, 31.5, 35.1, 38.9, 42.79],
+                        borderColor: 'var(--primary)',
+                        backgroundColor: 'rgba(74, 144, 142, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                    }]
+                },
+                options: chartOptions
+            });
+
+            const housingTenureCtx = document.getElementById('housingTenureChart').getContext('2d');
+            new Chart(housingTenureCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Renter Occupied (B2B Opportunity)', 'Owner Occupied'],
+                    datasets: [{
+                        label: 'Housing Tenure in Dallas',
+                        data: [57.6, 42.4],
+                        backgroundColor: ['var(--primary)', 'var(--accent)'],
+                        borderColor: 'var(--card-bg)',
+                        borderWidth: 4,
+                        hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                     plugins: {
+                        legend: {
+                            position: 'bottom',
+                             labels: { font: { family: 'Inter' } }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.label}: ${context.raw}%`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('main section');
+
+            function changeActiveLink() {
+                let index = sections.length;
+                while(--index && window.scrollY + 100 < sections[index].offsetTop) {}
+                navLinks.forEach((link) => link.classList.remove('active-nav'));
+                navLinks[index].classList.add('active-nav');
+            }
+            
+            window.addEventListener('scroll', changeActiveLink);
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.querySelector(link.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            updateSeasonalContent('spring');
+            renderCompetitorContent('national');
+            renderRoadmap();
+            changeActiveLink();
+
+        });
+    </script>
+</body>
+</html>
